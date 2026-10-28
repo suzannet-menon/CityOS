@@ -45,7 +45,6 @@ ROAD_SEGMENTS_QUERY = text(
         safety_score,
         road_type,
         lighting,
-        shade_score,
         ST_AsBinary(geometry) AS geometry_wkb
     FROM road_segments
     WHERE dataset_version = :dataset_version
@@ -75,7 +74,6 @@ class CachedRoadSegment:
     road_type: str | None
     lighting: bool | None
     geometry: Any
-    shade_score: float | None = None
 
 
 @dataclass(frozen=True)
@@ -159,9 +157,6 @@ class SafetyDatasetSnapshot:
                     ),
                     "segment_safety_score": (
                         road_match.safety_score if road_match is not None else None
-                    ),
-                    "segment_shade_score": (
-                        road_match.shade_score if road_match is not None else None
                     ),
                     "road_type": road_match.road_type if road_match is not None else None,
                     "lighting": road_match.lighting if road_match is not None else None,
@@ -438,11 +433,6 @@ class SafetyDatasetCache:
                     lighting=(
                         bool(mapping["lighting"])
                         if mapping["lighting"] is not None
-                        else None
-                    ),
-                    shade_score=(
-                        float(mapping["shade_score"])
-                        if mapping.get("shade_score") is not None
                         else None
                     ),
                     geometry=_load_geometry(mapping["geometry_wkb"]),
