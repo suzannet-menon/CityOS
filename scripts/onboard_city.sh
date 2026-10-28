@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# ResilientSteps City Onboarding Script
+# CiVix City Onboarding Script
 # Usage: ./scripts/onboard_city.sh <path_to_city_config.yaml>
 # Example: ./scripts/onboard_city.sh config/city.yaml
 

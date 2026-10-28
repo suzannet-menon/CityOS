@@ -1,23 +1,12 @@
-services:
-  backend:
-    build: ./backend
-    container_name: resilientsteps_backend
-    ports:
-      - "8000:8000"
-    env_file:
-      - ./backend/.env
-    environment:
-      - CITYOS_PROFILE=${CITYOS_PROFILE:-local}
-    depends_on:
-      - valhalla
-    restart: unless-stopped
-    volumes:
-      - ./config:/config:ro
-      - ./backend/uploads:/app/uploads
+name: civix
 
+# Valhalla runs as the only container; the FastAPI backend is started
+# manually (see scripts/start.ps1 + README step 4) so it can talk to the
+# Supabase pooler directly from the host.
+services:
   valhalla:
     image: ghcr.io/gis-ops/docker-valhalla/valhalla:latest
-    container_name: resilientsteps_valhalla
+    container_name: civix_valhalla
     ports:
       - "8002:8002"
     volumes:

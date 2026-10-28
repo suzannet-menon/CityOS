@@ -1,15 +1,23 @@
+name: civix
+
 services:
   backend:
     build: .
-    container_name: resilientsteps_backend
+    container_name: civix_backend
     ports:
       - "8000:8000"
     env_file:
       - .env
     environment:
       - CITYOS_PROFILE=${CITYOS_PROFILE:-local}
+      - VALHALLA_BASE_URL=http://valhalla:8002
     depends_on:
       - valhalla
+    extra_hosts:
+      # WSL2/Docker NAT has no IPv6 route; asyncpg resolves the Supabase
+      # pooler to an AAAA record first and dies with errno 101. Pin an IPv4
+      # ALB address so TLS SNI (and tenant routing) still use the hostname.
+      - "aws-0-ap-south-1.pooler.supabase.com:3.111.105.85"
     restart: unless-stopped
     volumes:
       - ../config:/config:ro
@@ -17,7 +25,7 @@ services:
 
   valhalla:
     image: ghcr.io/gis-ops/docker-valhalla/valhalla:latest
-    container_name: resilientsteps_valhalla
+    container_name: civix_valhalla
     ports:
       - "8002:8002"
     volumes:
