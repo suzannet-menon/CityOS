@@ -1,5 +1,5 @@
 """
-Simple in-process rate limiter for ResilientSteps API endpoints.
+Simple in-process rate limiter for CiVix API endpoints.
 
 Uses a token-bucket algorithm keyed by the authenticated user, falling back to
 the client address for anonymous requests. Keying on identity keeps clients

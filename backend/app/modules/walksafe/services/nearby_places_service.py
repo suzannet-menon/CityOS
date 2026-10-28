@@ -210,7 +210,7 @@ async def _find_nominatim_places(
                 "bounded": "1",
             },
             headers={
-                "User-Agent": "ResilientSteps/1.0",
+                "User-Agent": "CiVix/1.0",
                 "Accept-Language": "en",
             },
             timeout=NOMINATIM_TIMEOUT_SECONDS,
@@ -305,7 +305,7 @@ async def find_nearby_places(
         response = await request_client.get(
             OVERPASS_URL,
             params={"data": query},
-            headers={"User-Agent": "ResilientSteps/1.0"},
+            headers={"User-Agent": "CiVix/1.0"},
             timeout=OVERPASS_TIMEOUT_SECONDS,
         )
         response.raise_for_status()

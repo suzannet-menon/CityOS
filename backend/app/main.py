@@ -42,8 +42,8 @@ async def lifespan(_: FastAPI):
 
 
 app = FastAPI(
-    title="ResilientSteps API",
-    description="ResilientSteps API — Safety & Comfort-Aware Walking Navigation",
+    title="CiVix API",
+    description="CiVix API — Safety-Aware Walking Navigation",
     version="1.0.0",
     lifespan=lifespan,
 )
@@ -78,7 +78,7 @@ class NgrokHeaderMiddleware(BaseHTTPMiddleware):
 app.add_middleware(NgrokHeaderMiddleware)
 
 # Register WalkSafe module router under /walksafe and at root for backward compatibility
-app.include_router(walksafe_router, prefix="/walksafe", tags=["ResilientSteps"])
+app.include_router(walksafe_router, prefix="/walksafe", tags=["CiVix"])
 app.include_router(walksafe_router)
 
 # Register Infrastructure module router under /infra
@@ -97,7 +97,7 @@ if static_dir.exists():
 
 @app.get("/")
 async def root():
-    return {"message": "ResilientSteps API is running", "status": "online"}
+    return {"message": "CiVix API is running", "status": "online"}
 
 
 @app.get("/city")

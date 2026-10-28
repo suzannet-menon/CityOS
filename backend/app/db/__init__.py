@@ -1,1 +1,1 @@
-"""Database helpers for the ResilientSteps backend."""
+"""Database helpers for the CiVix backend."""
