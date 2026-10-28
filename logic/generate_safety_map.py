@@ -1,5 +1,5 @@
 """
-ResilientSteps Safety Data Ingest Job
+CiVix Safety Data Ingest Job
 ================================
 Run this script to populate the database with real safety scores from OpenStreetMap.
 This replaces ALL synthetic/random data. Run it once on setup, then periodically.
@@ -140,7 +140,7 @@ async def run_ingest(
     h3_res = city_cfg.get("h3_resolution", 9)
 
     print("=" * 60)
-    print(f"ResilientSteps Safety Data Ingest Job — {city_cfg.get('name', 'Pune')}")
+    print(f"CiVix Safety Data Ingest Job — {city_cfg.get('name', 'Pune')}")
     print("=" * 60)
 
     engine = create_async_engine(DATABASE_URL, echo=False)

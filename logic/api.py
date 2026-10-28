@@ -88,7 +88,7 @@ class SafetyMapIndex:
 
 
 app = FastAPI(
-    title="ResilientSteps Safety Map API",
+    title="CiVix Safety Map API",
     description="Serves segment-level safety scores for Pune.",
     version="1.0.0",
 )
@@ -128,7 +128,7 @@ def _require_index() -> SafetyMapIndex:
 
 @app.get("/")
 def health() -> Dict[str, str]:
-    return {"status": "ok", "service": "resilientsteps-safety-map"}
+    return {"status": "ok", "service": "civix-safety-map"}
 
 
 @app.get("/safety-map")
