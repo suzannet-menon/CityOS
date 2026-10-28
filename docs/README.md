@@ -1,31 +1,25 @@
-# ResilientSteps — Documentation Index
+# CiVix — Documentation Index
 
 ## Product scope
 
-ResilientSteps is a pedestrian navigation system that routes citizens through
-streets scored for **safety** and **thermal comfort**. Comfort is derived from
-two independent signals:
+CiVix is a pedestrian navigation system that routes citizens through
+streets scored for **safety**. Road-segment safety scores are precomputed
+by the `logic/` pipeline into PostGIS, and verified community incident
+reports adjust scores live at scoring time.
 
-- **Shade** — tree-canopy coverage, precomputed per road segment from
-  OpenStreetMap and stored in PostGIS.
-- **Heat** — current temperature, heat index, relative humidity, and UV index,
-  retrieved from Open-Meteo at request time.
+The active implementation scope is Phases 1–6:
 
-The active implementation scope is:
-
-1. **Phase 7 — Heat & Shade Data Layer**
-2. **Phase 8 — Comfort-Aware Route Finalisation & Live Observations**
-
-Phases 1–6 are already present in the codebase. Phase 1 (module structure) and
-Phase 2 (reporting) are reference material that Phase 8 builds on. Phases 3–6
-are outside the current scope.
+1. **Phase 1 — Walking-module structure**
+2. **Phase 2 — Reporting** (`report_type`, categories)
+3. **Phase 3 — Waste reporting**
+4. **Phase 4 — Authority dashboard**
+5. **Phase 5 — Deployment and configuration**
+6. **Phase 6 — Multi-city support**
 
 ## Document index
 
 | Document | Status | Contents |
 |----------|--------|----------|
-| `step_7_heat_and_shade_data.md` | Current | Open-Meteo heat service, OSM shade seed, migration `0006`, cache wiring |
-| `step_8_comfort_route_and_observations.md` | Current | Comfort composition, `prefer` parameter, observation corrections, mobile fields |
 | `BASELINE.md` | Current reference | Verified tables, endpoints, cache behaviour, and test inventory |
 | `step_1` … `step_6` | Historical | Origin of the module, reporting, config, and deployment structure |
 | `CityOS_Engineering_Handbook_Volume_I.md` | Legacy | Original platform vision |
@@ -33,43 +27,24 @@ are outside the current scope.
 | `cityos_plan.xml` | Legacy | Original module plan |
 
 Legacy documents carry a superseded banner. Where a legacy document conflicts
-with the current code or with Phases 7–8, the code and Phases 7–8 take
-precedence.
+with the current code, the code takes precedence.
 
 ## Phase status
 
-| Phase | Title | Status | Relevance |
-|-------|-------|--------|-----------|
-| 1 | Walking-module structure | Implemented | Structure reference |
-| 2 | Reporting (`report_type`, categories) | Implemented | Reused by Phase 8 observations |
-| 3 | Waste reporting | Implemented | Out of scope |
-| 4 | Authority dashboard | Implemented | Out of scope |
-| 5 | Deployment and configuration | Implemented | `config/` layout used by Phase 7 |
-| 6 | Multi-city support | Implemented | Out of scope |
-| 7 | Heat & Shade Data Layer | Not started | Required |
-| 8 | Comfort Route & Live Observations | Not started | Required |
-| 9 | Shade-preferring route alternatives | Backlog | Optional |
-
-Indicative schedule for a 15-day window: Phase 7 in 5–6 days, Phase 8 in 5–6
-days, with a 3-day buffer. The data layer (Phase 7) has priority; the
-alternative-route work (Phase 9) is the first item to defer.
-
-## Scope boundary
-
-The observation interface required for reporting conditions while walking is
-delivered by **Phase 8**, using the Phase 2 reporting machinery
-(`incident_reports`, `report_type`, `report_categories`). No separate
-infrastructure or waste reporting UI is required.
-
-Phase 8 reports a comfort score for the single route returned by Valhalla.
-Presenting two distinct route candidates (safety-first versus shade-first) is
-Phase 9 and is out of scope for the initial delivery.
+| Phase | Title | Status |
+|-------|-------|--------|
+| 1 | Walking-module structure | Implemented |
+| 2 | Reporting (`report_type`, categories) | Implemented |
+| 3 | Waste reporting | Implemented |
+| 4 | Authority dashboard | Implemented |
+| 5 | Deployment and configuration | Implemented |
+| 6 | Multi-city support | Implemented |
 
 ## Engineering conventions
 
 1. **Additive changes only.** New signals are added as new response keys. The
    existing `safety_score` value and all existing keys must remain unchanged.
-2. **I/O isolation.** Database access, Valhalla, and Open-Meteo are injected into
+2. **I/O isolation.** Database access and Valhalla are injected into
    services, not called from pure logic. Unit tests run without a database or
    network.
 3. **Characterisation before modification.** Freeze the current `/route-safe`
@@ -86,12 +61,8 @@ Phase 9 and is out of scope for the initial delivery.
 | Service | Purpose | Credentials |
 |---------|---------|-------------|
 | Valhalla | Pedestrian routing | Self-hosted; `VALHALLA_BASE_URL` |
-| Open-Meteo | Heat and UV data | None — keyless |
 | Supabase / PostGIS | Road, zone, and report storage | `DATABASE_URL`, Supabase keys |
 | Maptiler | Map tiles (mobile) | `MAPTILER_API_KEY` via `--dart-define` |
-
-OpenWeather is not used. Open-Meteo provides `apparent_temperature` (heat
-index), `relative_humidity_2m`, and `uv_index` without an API key.
 
 ## Commands
 

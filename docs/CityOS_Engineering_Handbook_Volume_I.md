@@ -1,8 +1,8 @@
-# ResilientSteps Engineering Handbook
+# CiVix Engineering Handbook
 
 > **Legacy document — superseded.** This is the original "CityOS" platform
-> handbook. The current product is **ResilientSteps**, focused on safety- and
-> comfort-aware walking navigation. See `docs/README.md` for the live roadmap.
+> handbook. The current product is **CiVix**, focused on safety- and
+> safety-aware walking navigation. See `docs/README.md` for the live roadmap.
 
 # Volume I --- Vision, Product & Functional Specification
 
@@ -32,7 +32,7 @@
 
 # 1. Executive Summary
 
-ResilientSteps is a civic operating platform that enables citizens to report
+CiVix is a civic operating platform that enables citizens to report
 infrastructure, waste management and public safety issues while giving
 municipal authorities real-time visibility and scheduled city-wide
 analytics.
@@ -61,7 +61,7 @@ geospatial intelligence.
 
 ## Long-term Goal
 
-Instead of replacing existing municipal software, ResilientSteps becomes an
+Instead of replacing existing municipal software, CiVix becomes an
 operational layer capable of ingesting citizen reports and transforming
 them into actionable city-wide insights.
 
@@ -88,7 +88,7 @@ for planning.
 
 # 4. Product Philosophy
 
-ResilientSteps follows several guiding principles.
+CiVix follows several guiding principles.
 
 ## Configuration over Code
 
@@ -111,7 +111,7 @@ without code changes.
 
 ## Platform First
 
-ResilientSteps is a module.
+CiVix is a module.
 
 Infrastructure reporting is a module.
 
@@ -181,7 +181,7 @@ Launches a complete demo environment from seeded data.
 
 # 8. Product Modules
 
-## ResilientSteps
+## CiVix
 
 Safety-first pedestrian routing.
 
@@ -274,7 +274,7 @@ Citizen → Capture photo → Choose category → Choose severity → Submit
 
 Authority → Verify → Scheduled aggregation → Heatmap update
 
-## ResilientSteps
+## CiVix
 
 Origin → Destination → Safe route → Navigation → Arrival
 
@@ -327,7 +327,7 @@ Hackathon Metrics
 
 Phase 1
 
-ResilientSteps modularisation
+CiVix modularisation
 
 Phase 2
 
@@ -365,4 +365,4 @@ API contracts, frontend implementation, deployment pipelines, testing
 strategy, and operations in implementation-level detail.
 
 This handbook is intended to become the authoritative specification for
-ResilientSteps.
+CiVix.

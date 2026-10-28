@@ -1,8 +1,8 @@
-# ResilientSteps — Current-State Baseline
+# CiVix — Current-State Baseline
 
-> **Purpose**: This document records the exact state of the ResilientSteps repository as it exists
+> **Purpose**: This document records the exact state of the CiVix repository as it exists
 > today. Every file path, table name, column, endpoint, and env var listed here has been
-> verified against the source code. Any agent or developer working on the ResilientSteps
+> verified against the source code. Any agent or developer working on the CiVix
 > codebase **must read this document first** to avoid inventing phantom entities or contradicting
 > existing systems.
 >
@@ -13,7 +13,7 @@
 ## 1. Repository Structure
 
 ```
-ResilientSteps/
+CiVix/
 ├── ARCHITECTURE.md                    High-level system description
 ├── README.md                          Full project documentation (578 lines)
 ├── RULES.md                           Agent constraint rules
@@ -253,7 +253,7 @@ Run with: `cd backend && alembic upgrade head`
 
 ### FastAPI Application
 
-- **Title**: "ResilientSteps API"
+- **Title**: "CiVix API"
 - **Entrypoint**: `backend/app/main.py` → `app = FastAPI(...)`
 - **Run**: `python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload`
 - **Lifespan**: On startup, warms the safety dataset cache (loads all `road_segments` + `safety_zones` into an in-memory STRtree)
@@ -268,7 +268,7 @@ Run with: `cd backend && alembic upgrade head`
 
 | Method | Path | Auth | Rate Limit | Description |
 |--------|------|------|------------|-------------|
-| `GET` | `/` | None | None | Returns `{"message": "ResilientSteps API is running", "status": "online"}` |
+| `GET` | `/` | None | None | Returns `{"message": "CiVix API is running", "status": "online"}` |
 | `GET` | `/ready` | None | None | Readiness probe — 200 when cache warm, 503 during startup |
 
 #### Routing (`app/routers/routing.py`)

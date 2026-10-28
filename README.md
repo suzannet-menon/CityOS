@@ -2,13 +2,13 @@
 
 ```
 ╔═══════════════════════════════════════════════════════════════════╗
-║                     R E S I L I E N T S T E P S                    ║
+║                     C I T Y O S  /  C i V i x                     ║
 ╚═══════════════════════════════════════════════════════════════════╝
 ```
 
-**The safer, cooler way to walk.**
+**The safer way to walk.**
 
-*Pedestrian safety & comfort navigation for Pune — routes that prioritise your safety and shade over speed.*
+*Pedestrian safety navigation for Pune — routes that prioritise your safety over speed.*
 
 ---
 
@@ -22,9 +22,9 @@
 
 ---
 
-## What is ResilientSteps?
+## What is CiVix?
 
-Most navigation apps optimise for speed. ResilientSteps optimises for **safety**.
+Most navigation apps optimise for speed. CiVix optimises for **safety**.
 
 Instead of asking "how do I get there fastest?" it asks "how do I get there most safely?" — routing pedestrians through well-lit streets, footpaths, and residential roads while avoiding high-speed arterials, poorly-lit stretches, and areas with recent incident reports.
 
@@ -39,7 +39,7 @@ Your location
       │
       ▼
  ┌─────────────────────────────────────────────────────┐
- │                   ResilientSteps Backend                  │
+ │                   CiVix Backend                           │
  │                                                     │
  │  ┌──────────┐    ┌───────────┐    ┌──────────────┐  │
  │  │ Valhalla │───▶│   Risk    │───▶│  Safe Route │  │
@@ -73,14 +73,6 @@ Every street segment in Pune carries a **safety score** (0–100) derived from:
 In-motion, the route score additionally subtracts a penalty from **verified
 community incident reports** near the road segments being walked.
 
-Before you start walking, the app also shows a **comfort score** built from two
-climate signals:
-
-| Signal | How it's used |
-|--------|--------------|
-| Shade score | OSM tree canopy + green areas around each street segment (live data, not predefined) |
-| Heat index | Live Open-Meteo "feels-like" temperature, banded Pleasant / Mild / High / Extreme |
-
 Routes minimise total risk across all segments, not just distance.
 
 ### Concrete data flow
@@ -89,7 +81,7 @@ Routes minimise total risk across all segments, not just distance.
    backend asks self-hosted Valhalla for a pedestrian route, then `score_route`
    matches the route geometry to precomputed `road_segments` (STRtree cache,
    re-warmed automatically when the dataset version changes) and returns
-   per-segment safety/shade/heat plus route comfort. The app renders the
+   per-segment safety data. The app renders the
    polyline, the zone overlay (from `/safety-zones`, cached offline in
    `shared_preferences`), and the card metrics.
 2. **Destination search / geocoding** — the app calls Nominatim directly
@@ -104,10 +96,9 @@ Routes minimise total risk across all segments, not just distance.
 4. **SOS** — the app records `POST /reports/emergency` (GPS location +
    trusted contacts → `emergency_alerts`) and the **device** sends SMS to
    trusted contacts on its own. If GPS is unavailable the SOS is blocked.
-5. **Precomputed vs live** — segment scores, zone hexagons and shade scores
-   are precomputed by the `logic/` pipeline into PostGIS; weather heat
-   penalty is fetched live per request (cached 15 min, degrades to 0 on
-   failure); reports/scores interplay is live at scoring time.
+5. **Precomputed vs live** — segment scores and zone hexagons
+   are precomputed by the `logic/` pipeline into PostGIS; reports/scores
+   interplay is live at scoring time.
 
 ---
 
@@ -165,7 +156,7 @@ dynamically (see API reference) — segment data itself is not rewritten.
 ## Repository layout
 
 ```
-ResilientSteps/
+CityOS/
 ├── docker-compose.yml            Root stack: valhalla + backend services
 ├── linuxinstructions.md          Linux-specific setup notes
 ├── LOCAL_SETUP_STATUS.md         Three-terminal runbook + fresh-vs-stale checklist
@@ -180,7 +171,7 @@ ResilientSteps/
 │   │   │   ├── routers/          routing.py (route/scoring), reports.py (SOS),
 │   │   │   │                     admin.py (moderation), nearby tile endpoints
 │   │   │   ├── services/         Valhalla integration, risk engine, safety
-│   │   │   │                     dataset cache (STRtree), weather (Open-Meteo)
+│   │   │   │                     dataset cache (STRtree)
 │   │   │   └── schemas/
 │   │   └── routers/, services/   Legacy import shims (2–4 lines, re-export
 │                                 the app/modules/* code for old tests)
@@ -205,7 +196,6 @@ ResilientSteps/
 │
 └── logic/                        Spatial data pipeline
     ├── generate_safety_map.py    OSMnx ingest + H3 zone generation
-    ├── generate_shade_map.py     Tree-canopy shade_score seed (run AFTER safety map)
     ├── generate_street_graph.py  Standalone street graph builder
     ├── generate_incidents.py     Synthetic demo incident generator
     ├── seed_demo_data.py         Demo categories/reports seeding
@@ -216,7 +206,7 @@ ResilientSteps/
 
 ## Prerequisites
 
-Before running ResilientSteps locally you need:
+Before running CiVix locally you need:
 
 - [Flutter SDK](https://docs.flutter.dev/get-started/install) (stable channel)
 - [Python 3.11+](https://www.python.org/downloads/)
@@ -232,8 +222,8 @@ Before running ResilientSteps locally you need:
 ### 1 — Clone and configure
 
 ```bash
-git clone https://github.com/suzannet-menon/ResilientSteps.git
-cd ResilientSteps
+git clone https://github.com/suzannet-menon/CityOS.git
+cd CityOS
 ```
 
 Copy the environment template and fill in your values:
@@ -358,35 +348,7 @@ Written 1,204 safety zone polygons.
 Done. Dataset version: 20250103-141200 | Time: 847.3s
 ```
 
-### 5 — Populate the shade scores
-
-Safety-map rows start with `shade_score = NULL`; without this step every route
-shows "Shade: -". The script fetches OSM canopy features (trees, parks, forests,
-grass) once, scores a ~15 m buffer around each street segment, and updates the
-rows written by `generate_safety_map.py` — it never inserts segments, so it must
-run *after* step 4. It reads the same `DATABASE_URL` from `backend/.env`, and
-creates the `(osm_way_id, dataset_version)` index it needs on first run.
-Expect 10–30 minutes on first run (Overpass download); afterwards it runs from
-the local cache.
-
-```bash
-cd logic
-python generate_shade_map.py
-```
-
-When complete you will see (counts again illustrative):
-```
-Updating shade for dataset_version 20250103-141200...
-Done writing 450,000 rows, committing...
-Scored 450,000 segments. Mean shade 1.9 (skipped 1,102 edges without an OSM way id).
-Done. Time: 1234.5s
-```
-
-> The shade job is **idempotent** — re-running rewrites the same rows and does
-> not re-ingest geometry. Both seeds never overwrite the DB schema and can be
-> re-run safely.
-
-### 6 — Start the backend
+### 5 — Start the backend
 
 ```bash
 cd backend
@@ -396,12 +358,12 @@ python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 Verify:
 ```bash
 curl http://localhost:8000/
-# Expected: {"message":"ResilientSteps API is running","status":"online"}
+# Expected: {"message":"CiVix API is running","status":"online"}
 curl http://localhost:8000/ready
 # Expected: {"ready":true} once the safety dataset cache is warmed (503 during warmup)
 ```
 
-### 7 — Run the mobile app
+### 6 — Run the mobile app
 
 The app reads four compile-time constants (dart-defines). Create
 `mobile/config/dart_defines.json` (gitignored — never committed) with all four
@@ -436,11 +398,8 @@ flutter run -d chrome --dart-define-from-file=config/dart_defines.json
 #   --dart-define=API_BASE_URL=http://YOUR-LAN-IP:8000
 ```
 
-> If the backend calls fail silently and the route shows **no shade score and
-> no heat index at all**, check `API_BASE_URL` first — the backend always
-> returns `heat_penalty` (it degrades to `0.0` → "Pleasant" if the weather API
-> is down), so a missing heat index means the app never received the scored
-> payload. Verify with:
+> If the backend calls fail silently and the route score stays empty, check
+> `API_BASE_URL` first — the scored payload must reach the app. Verify with:
 > `curl "http://API_BASE_URL/route-safe?start_lat=18.5204&start_lon=73.8567&end_lat=18.53&end_lon=73.86"`
 
 ## Verification checklist & troubleshooting
@@ -450,11 +409,11 @@ After setup, confirm each layer before blaming the next one:
 | Check | Command | Success looks like |
 |---|---|---|
 | Database | `alembic upgrade head` in `backend/` (idempotent) | "nothing to update" / migrations applied |
-| Safety data | `SELECT count(*), count(shade_score) FROM road_segments;` in Supabase SQL editor | Both counts > 0 (else re-run steps 4–5) |
+| Safety data | `SELECT count(*) FROM road_segments;` in Supabase SQL editor | Count > 0 (else re-run step 4) |
 | Safety-zone endpoint non-empty | `curl "http://localhost:8000/safety-zones?min_lat=18.5&max_lat=18.6&min_lon=73.8&max_lon=73.9"\| jq ".features \| length"` (raw curl also fine) | `features` array length > 0 |
 | Valhalla | `curl http://localhost:8002/status` | JSON with `tileset_last_modified` |
 | Backend | `curl http://localhost:8000/ready` | `{"ready":true}` — 503 means the cache was still warming at startup; restart the backend (it warms on boot) |
-| Route scoring | the `/route-safe` probe above | `segments[0].shade_score` and `heat_penalty` present |
+| Route scoring | the `/route-safe` probe above | `segments[0].safety_score` present |
 | Mobile config | app starts without assertion errors | dart-defines file has all 4 keys (see step 7) |
 
 ### Common failures
@@ -464,7 +423,7 @@ After setup, confirm each layer before blaming the next one:
 | Docker can't start (WSL2) | Docker Desktop not fully booted / WSL2 not enabled | Ensure `wsl --status` works; start Docker Desktop first, then `docker compose up -d valhalla` |
 | Valhalla builds forever | First-run tile download (~500 MB western-India extract) | It can take 10–20+ min; watch the container logs (`docker compose logs -f valhalla`). Rebuild only when `force_rebuild=True` |
 | Backend 500 / DB errors | `.env` missing or `DATABASE_URL` unreachable | `curl http://localhost:8000/ready`; check the pooler/DB URL; wait for startup warmup |
-| Mobile: routes draw but no Safety/Shade/Heat card | `API_BASE_URL` wrong for the target (emulator vs phone vs Chrome — see config table) | Hit `/route-safe` via curl from the same machine; if JSON is fine, it is the baked URL — rebuild with the right override |
+| Mobile: routes draw but no Safety card | `API_BASE_URL` wrong for the target (emulator vs phone vs Chrome — see config table) | Hit `/route-safe` via curl from the same machine; if JSON is fine, it is the baked URL — rebuild with the right override |
 | Port 8000 already in use (Windows, WinError 10013) | A stale uvicorn holds the port | `Get-NetTCPConnection -LocalPort 8000 \| Select OwningProcess`, stop it, restart |
 | Flutter web CORS errors | Dev origins / `CITYOS_PROFILE` config | CORS origins come from `config/` city/profile config (default `*`); check the backend console |
 | Map tiles blank (403) | Wrong `MAPTILER_API_KEY` baked in | Fix `dart_defines.json`, rebuild |
@@ -476,7 +435,7 @@ After setup, confirm each layer before blaming the next one:
 
 ## Building a shareable demo APK
 
-ResilientSteps uses ngrok to expose the local backend over a permanent HTTPS URL so the APK
+CiVix uses ngrok to expose the local backend over a permanent HTTPS URL so the APK
 works anywhere — not just on your local network.
 
 ### Set up ngrok
@@ -551,12 +510,10 @@ Body: { "coordinates": [[lat, lon], ...] }
 Scores a route's safety using the cached road segment data and live verified incidents.
 
 ```
-GET /route-safe?start_lat=&start_lon=&end_lat=&end_lon=&prefer=balanced
+GET /route-safe?start_lat=&start_lon=&end_lat=&end_lon=
 ```
 Combined route fetch + safety scoring in a single call. Each segment includes
-`safety_score`, `shade_score`, `heat_penalty`, and `comfort_score`; the top
-level adds the route-wide comfort score/level. `prefer` selects the comfort
-weighting: `balanced`, `safety`, `shade`, or `heat`.
+a `safety_score`.
 
 ```
 GET /safety-zones?min_lat=&max_lat=&min_lon=&max_lon=
@@ -600,9 +557,8 @@ POST /admin/reports/{id}/reject
 Verification flips the report's status — it does **not** rewrite road-segment
 data. Verified reports affect scores dynamically at scoring time: an incident
 report influences the nearest road segment within 30 metres of its location
-(weighted by confidence, category, status and recency), and shade-relevant
-categories ("no shade / heavy sun", "cool shaded spot / water available") add a
-shade correction to that segment. Pending and rejected reports have no effect.
+(weighted by confidence, category, status and recency). Pending and rejected
+reports have no effect.
 
 **Example moderation workflow:**
 
@@ -669,8 +625,6 @@ confidence × status (verified 1.0, resolved 0.4, pending 0.65) × category
 
 - Verified incident reports are matched to road segments within **30 m** and
   apply an additional incident penalty.
-- Shade corrections from verified "no shade" / "cool shaded spot" reports are
-  added to the base shade score (clamped).
 
 ### Zone classification
 
@@ -679,49 +633,6 @@ confidence × status (verified 1.0, resolved 0.4, pending 0.65) × category
 | ≥ 70 | 🟢 Green | Safe |
 | 40–69 | 🟡 Amber | Cautious |
 | < 40 | 🔴 Red | Risky |
-
-## Shade & heat scoring reference
-
-Every route segment also carries a shade score and the route carries live heat
-data, which combine into the comfort score shown before you start walking.
-
-### Shade score (`logic/generate_shade_map.py`)
-
-Scores a ~15 m buffer around each street segment against OSM canopy features
-(`natural=tree/wood/scrub`, `landuse=forest/grass`, `leisure=park/garden`):
-
-| Component | Contribution |
-|-----------|-------------|
-| Tree points in buffer | 0.7 × min(1.0, trees ÷ 6) |
-| Green-area coverage of buffer | 0.3 × min(1.0, coverage ÷ 0.6) |
-
-Result clamped to [0, 100] and written as `shade_score` with
-`shade_source='osm_canopy'`. The visual Shade % on a route is the average
-across matched segments.
-
-> **Data caveat:** OSM's canopy tagging in Pune is sparse — most segments
-> score 0. A 0% reading is expected in unmapped areas, not a data error.
-
-### Heat penalty (`backend/.../services/weather_service.py`)
-
-Live Open-Meteo `apparent_temperature` (keyless, no API account):
-
-| Feels-like temp | Heat penalty |
-|----------------|-------------|
-| ≥ 42 °C | 30 |
-| ≥ 38 °C | 20 |
-| ≥ 32 °C | 12 |
-| ≥ 28 °C | 5 |
-| below 28 °C | 0 |
-
-UV index ≥ 8 adds +5. Weather failures **degrade, never block**: heat penalty
-falls back to `0.0`, displayed as "Pleasant".
-
-### Comfort score
-
-Weighted blend of the safety, shade and heat signals. The `prefer` query
-parameter on `/route-safe` selects the weighting profile: `balanced`,
-`safety`, `shade`, or `heat`.
 
 ---
 
@@ -740,10 +651,6 @@ parameter on `/route-safe` selects the weighting profile: `balanced`,
   point-level OSM tags like `lit=` or `sidewalk=` — lighting and crowd inputs
   come from road-type heuristics and intersection density. Unmapped/unknown
   road types fall back to middle-of-the-road defaults.
-
-- **Sparse canopy data.** OSM tree/park tagging is sparse in Pune — most street
-  segments shade-score 0, so route Shade % is often `0%`/`<1%` unless the route
-  passes mapped greenery. Upgrading to satellite-derived canopy would fix this.
 
 - **Heading on emulators.** Map rotation during navigation requires a real device
   with a compass. Android emulators return a constant heading of 0 or -1.
@@ -798,7 +705,7 @@ Grounded in what the code actually does:
 
 ## Contributing
 
-ResilientSteps is a private project in active development. If you have been given access to
+CiVix is a private project in active development. If you have been given access to
 this repository:
 
 1. Do not push directly to `main` — branch, PR, and wait for review
@@ -817,7 +724,7 @@ License: MIT (see [LICENSE](LICENSE)).
 
 ## Acknowledgements
 
-ResilientSteps is built on the shoulders of genuinely excellent open-source work:
+CiVix is built on the shoulders of genuinely excellent open-source work:
 
 - **[OpenStreetMap](https://www.openstreetmap.org)** — the street data that makes
   safety scoring possible

@@ -1,14 +1,14 @@
 <?xml version="1.0" ?>
-<!-- Legacy document - superseded. Original "CityOS" plan; current product is ResilientSteps. See docs/README.md. -->
-<ResilientStepsPlan version="1.0" source="README.md + conversation">
+<!-- Legacy document - superseded. Original "CityOS" plan; current product is CiVix. See docs/README.md. -->
+<CiVixPlan version="1.0" source="README.md + conversation">
   <Project>
-    <CurrentName>ResilientSteps</CurrentName>
-    <PivotName>ResilientSteps</PivotName>
+    <CurrentName>CiVix</CurrentName>
+    <PivotName>CiVix</PivotName>
     <Vision>Evolve the pedestrian-safety app into a broader civic operating system for mobility, infrastructure, sanitation, and municipal planning.</Vision>
   </Project>
   <CurrentState>
     <WhatExistsNow>Safety-first routing, live danger zone overlays, real-time navigation, SOS alerts, incident reporting, operator moderation, H3-based safety zones, and a FastAPI + Flutter + PostGIS + Valhalla stack.</WhatExistsNow>
-    <RelevantREADMEReferences>ResilientSteps currently prioritizes safety over speed, includes incident reporting and SOS, uses H3 zones, and already lists media uploads as a planned feature.</RelevantREADMEReferences>
+    <RelevantREADMEReferences>CiVix currently prioritizes safety over speed, includes incident reporting and SOS, uses H3 zones, and already lists media uploads as a planned feature.</RelevantREADMEReferences>
   </CurrentState>
   <Modules>
     <Module name="SafeMobility">
@@ -59,7 +59,7 @@
   <WhatNeedsToChange>
     <Group name="ProductDirection">
       <Item>Shift the project pitch from only pedestrian safety to broader city operations.</Item>
-      <Item>Keep ResilientSteps as one module instead of the whole product.</Item>
+      <Item>Keep CiVix as one module instead of the whole product.</Item>
       <Item>Make the system useful even without always-on hosting or live users.</Item>
     </Group>
     <Group name="DataAndBackend">
@@ -125,4 +125,4 @@
     <Principle>Optimize for reproducibility and low operating cost rather than perpetual hosting.</Principle>
     <HackathonGoal>A judge should be able to run a fully populated demo from config and seed data on competition day.</HackathonGoal>
   </Notes>
-</ResilientStepsPlan>
+</CiVixPlan>
