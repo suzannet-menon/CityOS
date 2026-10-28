@@ -29,7 +29,7 @@ void main() {
       expect(find.text('Sign in'), findsOneWidget);
       expect(find.text('Continue as guest'), findsOneWidget);
       expect(find.text('Sign up'), findsOneWidget);
-      expect(find.image(const AssetImage('assets/f-logo.png')), findsOneWidget);
+      expect(find.image(const AssetImage('assets/civix_logo.png')), findsOneWidget);
       expect(tester.takeException(), isNull);
     });
 
@@ -49,7 +49,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Welcome back'), findsOneWidget);
-      expect(find.image(const AssetImage('assets/f-logo.png')), findsOneWidget);
+      expect(find.image(const AssetImage('assets/civix_logo.png')), findsOneWidget);
 
       final Size emailFieldSize = tester.getSize(
         find.widgetWithText(TextFormField, 'Email address'),
@@ -77,7 +77,7 @@ void main() {
 
       // Two-pane mode shows the brand bullets.
       expect(
-        find.text('Routes that weigh shade, heat, and incident zones'),
+        find.text('Routes that weigh safety and incident zones'),
         findsOneWidget,
       );
 
@@ -112,7 +112,7 @@ void main() {
       expect(find.byType(TextFormField), findsNWidgets(4));
       expect(find.text('Create account'), findsOneWidget);
       expect(find.text('Sign in'), findsOneWidget);
-      expect(find.image(const AssetImage('assets/f-logo.png')), findsOneWidget);
+      expect(find.image(const AssetImage('assets/civix_logo.png')), findsOneWidget);
       expect(tester.takeException(), isNull);
     });
 
@@ -132,7 +132,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Create your account'), findsOneWidget);
-      expect(find.image(const AssetImage('assets/f-logo.png')), findsOneWidget);
+      expect(find.image(const AssetImage('assets/civix_logo.png')), findsOneWidget);
 
       final Size nameFieldSize = tester.getSize(
         find.widgetWithText(TextFormField, 'Display name'),
@@ -158,7 +158,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(
-        find.text('Routes that weigh shade, heat, and incident zones'),
+        find.text('Routes that weigh safety and incident zones'),
         findsOneWidget,
       );
 

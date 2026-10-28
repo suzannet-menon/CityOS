@@ -170,10 +170,6 @@ class _NavigationCardState extends State<NavigationCard> {
     final String distLabel = distKm >= 1
         ? '${distKm.toStringAsFixed(1)} km'
         : '${route.totalDistanceMeters.round()} m';
-
-    // Real tree-canopy shade from the backend (null when no shade data).
-    final String shadeLabel = shadeLabelFor(route);
-
     // ETA clock string
     final DateTime etaTime = DateTime.now().add(Duration(minutes: etaMinutes));
     final String etaStr =
@@ -220,7 +216,7 @@ class _NavigationCardState extends State<NavigationCard> {
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
-                        color: const Color(0xFF1B6B3A),
+                        color: const Color(0xFF2557C9),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: const Icon(
@@ -234,7 +230,7 @@ class _NavigationCardState extends State<NavigationCard> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Row(
+                                  Row(
                             children: <Widget>[
                               Text(
                                 'Navigating',
@@ -246,31 +242,6 @@ class _NavigationCardState extends State<NavigationCard> {
                                       fontWeight: FontWeight.w800,
                                     ),
                               ),
-                              const SizedBox(width: 8),
-                              if (route.comfortLevel == 'comfortable')
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                    vertical: 3,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFFDCF5E8),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Text(
-                                    route.comfortScore != null
-                                        ? 'CLIMATE SAFE ${route.comfortScore!.round()}%'
-                                        : 'CLIMATE SAFE',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .labelSmall
-                                        ?.copyWith(
-                                          color: const Color(0xFF1B6B3A),
-                                          fontWeight: FontWeight.w800,
-                                          letterSpacing: 0.4,
-                                        ),
-                                  ),
-                                ),
                             ],
                           ),
                           const SizedBox(height: 3),
@@ -296,29 +267,9 @@ class _NavigationCardState extends State<NavigationCard> {
                 ),
               ),
               const SizedBox(height: 14),
-              // Three metric cards
+              // Safety metric card
               Row(
                 children: <Widget>[
-                  Expanded(
-                    child: _NavMetricCard(
-                      label: 'Shade',
-                      value: shadeLabel,
-                      sublabel: 'Tree canopy',
-                      labelColor: const Color(0xFF1B6B3A),
-                      backgroundColor: const Color(0xFFE8F5EE),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: _NavMetricCard(
-                      label: 'Heat Index',
-                      value: route.heatIndexLabel ?? '—',
-                      sublabel: 'Feels-like & UV',
-                      labelColor: const Color(0xFFC05E0A),
-                      backgroundColor: const Color(0xFFFFF8E1),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
                   Expanded(
                     child: _NavMetricCard(
                       label: 'Safety',
@@ -335,7 +286,7 @@ class _NavigationCardState extends State<NavigationCard> {
               Row(
                 children: <Widget>[
                   _RouteChip(
-                    label: 'Climate-Smart  •  $etaMinutes min',
+                    label: 'Safest  •  $etaMinutes min',
                     selected: true,
                     onTap: () {},
                   ),
@@ -460,28 +411,6 @@ class _NavigationCardState extends State<NavigationCard> {
                   : FontWeight.w600,
             ),
           ),
-          if (route.comfortSummary != null) ...<Widget>[
-            const SizedBox(height: 14),
-            Row(
-              children: <Widget>[
-                const Icon(
-                  Icons.thermostat_rounded,
-                  size: 18,
-                  color: Color(0xFF2C8C63),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    route.comfortSummary!,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: const Color(0xFF2C8C63),
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
           const SizedBox(height: 22),
           GradientButton(
             label: 'STOP NAVIGATION',
@@ -690,7 +619,7 @@ class WalkSafeBottomSheet extends StatelessWidget {
   final VoidCallback onOriginConfirm;
   final VoidCallback onChangeOrigin;
 
-  static const Color _deepGreen = Color(0xFF1B6B3A);
+  static const Color _deepBlue = Color(0xFF2557C9);
 
   @override
   Widget build(BuildContext context) {
@@ -777,7 +706,7 @@ class WalkSafeBottomSheet extends StatelessWidget {
                           height: 20,
                           child: CircularProgressIndicator(
                             strokeWidth: 2.2,
-                            color: _deepGreen,
+                            color: _deepBlue,
                           ),
                         )
                       else if (onClearRoute != null && hasDestination)
@@ -801,10 +730,6 @@ class WalkSafeBottomSheet extends StatelessWidget {
                   destinationLabel: destinationLabel!,
                 ),
               ],
-              // Weather / heat banner (live data when the backend returned
-              // heat; hidden entirely when no heat data is available).
-              const SizedBox(height: 12),
-              _WeatherBanner(route: route),
             ],
           ),
         ),
@@ -830,7 +755,7 @@ class _OriginConfirmCard extends StatelessWidget {
   final VoidCallback onOriginConfirm;
   final VoidCallback onChangeOrigin;
 
-  static const Color _deepGreen = Color(0xFF1B6B3A);
+  static const Color _deepBlue = Color(0xFF2557C9);
 
   bool get _visible => originLoading || originNeedsConfirm || (originLabel != null);
 
@@ -858,7 +783,7 @@ class _OriginConfirmCard extends StatelessWidget {
             child: const Icon(
               Icons.my_location_rounded,
               size: 20,
-              color: _deepGreen,
+              color: _deepBlue,
             ),
           ),
           const SizedBox(width: 12),
@@ -869,7 +794,7 @@ class _OriginConfirmCard extends StatelessWidget {
                 Text(
                   'Starting point',
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: _deepGreen,
+                    color: _deepBlue,
                     fontWeight: FontWeight.w700,
                     letterSpacing: 0.2,
                   ),
@@ -897,7 +822,7 @@ class _OriginConfirmCard extends StatelessWidget {
             const SizedBox(
               width: 20,
               height: 20,
-              child: CircularProgressIndicator(strokeWidth: 2.2, color: _deepGreen),
+              child: CircularProgressIndicator(strokeWidth: 2.2, color: _deepBlue),
             )
           else if (originNeedsConfirm && originLabel != null) ...<Widget>[
             TextButton(
@@ -910,7 +835,7 @@ class _OriginConfirmCard extends StatelessWidget {
               child: const Text(
                 'Yes',
                 style: TextStyle(
-                  color: _deepGreen,
+                  color: _deepBlue,
                   fontWeight: FontWeight.w800,
                   fontSize: 14,
                 ),
@@ -943,12 +868,12 @@ class _OriginConfirmCard extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  const Icon(Icons.edit_rounded, size: 14, color: _deepGreen),
+                  const Icon(Icons.edit_rounded, size: 14, color: _deepBlue),
                   const SizedBox(width: 4),
                   Text(
                     originNeedsConfirm ? 'Add start' : 'Change',
                     style: const TextStyle(
-                      color: _deepGreen,
+                      color: _deepBlue,
                       fontWeight: FontWeight.w800,
                       fontSize: 14,
                     ),
@@ -981,16 +906,7 @@ class _DestinationResultCard extends StatelessWidget {
       final String distLabel = distKm >= 1
           ? '${distKm.toStringAsFixed(1)} km'
           : '${route!.totalDistanceMeters.round()} m';
-      // Real tree-canopy shade; the shade clause is dropped when the backend
-      // returned no shade scores so we never show a lighting-derived fake.
-      final String shadeLabel = shadeLabelFor(route);
-      subtitle = shadeLabel == '-'
-          ? '$etaMin min  •  $distLabel'
-          : '$etaMin min  •  $distLabel ($shadeLabel tree shade)';
-      final String? climate = route!.comfortSummary;
-      if (climate != null) {
-        subtitle = '$subtitle — $climate';
-      }
+      subtitle = '$etaMin min  •  $distLabel';
     }
 
     return Container(
@@ -1030,54 +946,6 @@ class _DestinationResultCard extends StatelessWidget {
               ),
             ),
           ],
-        ],
-      ),
-    );
-  }
-}
-
-class _WeatherBanner extends StatelessWidget {
-  const _WeatherBanner({required this.route});
-
-  final ScoredRoute? route;
-
-  @override
-  Widget build(BuildContext context) {
-    // Live Open-Meteo heat, surfaced by /route-safe as per-segment
-    // heat_penalty. Hidden completely when the backend has no heat data
-    // (older deployments or a degraded weather lookup) so we never fake a
-    // "hot today" claim.
-    final double? maxHeat = route?.maxHeatPenalty;
-    if (maxHeat == null) {
-      return const SizedBox.shrink();
-    }
-
-    final int heatPct = ((maxHeat / 40) * 100).round().clamp(0, 100);
-    final bool severe = maxHeat >= 20;
-    final String label = route!.heatIndexLabel ?? 'Mild';
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-      decoration: BoxDecoration(
-        color: severe ? const Color(0xFFFEF0EC) : const Color(0xFFFFF8E1),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
-        children: <Widget>[
-          Icon(
-            severe ? Icons.local_fire_department_outlined : Icons.wb_sunny_outlined,
-            color: severe ? const Color(0xFFC75B48) : const Color(0xFFF59E0B),
-            size: 18,
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Text(
-              'Heat Index: $label ($heatPct%) — shade-aware routing enabled',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: severe ? const Color(0xFF9A3D2E) : const Color(0xFF92400E),
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
         ],
       ),
     );
@@ -1662,7 +1530,7 @@ Future<void> showSosLocationRequiredDialog(BuildContext context) {
     builder: (_) => AlertDialog(
       title: const Text('Location required for SOS'),
       content: const Text(
-        'ResilientSteps needs your GPS location to send an accurate SOS alert.\n\n'
+        'CiVix needs your GPS location to send an accurate SOS alert.\n\n'
         'Please enable location permissions in your phone settings, then try again.\n\n'
         'If you need immediate help, call 112.',
       ),

@@ -42,7 +42,7 @@ class _EmergencySosScreenState extends State<EmergencySosScreen> {
           builder: (_) => AlertDialog(
             title: const Text('Location required for SOS'),
             content: const Text(
-              'ResilientSteps needs your GPS location to send an accurate SOS alert.\n\n'
+              'CiVix needs your GPS location to send an accurate SOS alert.\n\n'
               'Please enable location permissions in your phone settings, then try again.\n\n'
               'If you need immediate help, call 112.',
             ),
@@ -85,7 +85,7 @@ class _EmergencySosScreenState extends State<EmergencySosScreen> {
           content: Text(
             sent
                 ? 'Emergency SOS was sent to your trusted contacts.'
-                : 'ResilientSteps could not confirm the SMS send. Call local emergency services immediately.',
+                : 'CiVix could not confirm the SMS send. Call local emergency services immediately.',
           ),
           actions: <Widget>[
             TextButton(

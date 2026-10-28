@@ -13,8 +13,8 @@ class SignupScreen extends StatefulWidget {
 }
 
 // Brand green used across the app (matching GradientButton / deep-green CTA).
-const Color _brandGreen = Color(0xFF1B6B3A);
-const Color _brandGreenLight = Color(0xFF2E8B50);
+const Color _brandBlue = Color(0xFF2557C9);
+const Color _brandBlueLight = Color(0xFF3E74E0);
 
 class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _nameController = TextEditingController();
@@ -124,7 +124,7 @@ class _SignupScreenState extends State<SignupScreen> {
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
         borderSide: BorderSide(
-          color: _brandGreen,
+          color: _brandBlue,
           width: 1.8,
         ),
       ),
@@ -299,14 +299,14 @@ class _SignupScreenState extends State<SignupScreen> {
         child: DecoratedBox(
           decoration: BoxDecoration(
             gradient: const LinearGradient(
-              colors: <Color>[_brandGreen, _brandGreenLight],
+              colors: <Color>[_brandBlue, _brandBlueLight],
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
             ),
             borderRadius: BorderRadius.circular(14),
             boxShadow: <BoxShadow>[
               BoxShadow(
-                color: _brandGreen.withValues(alpha: 0.30),
+                color: _brandBlue.withValues(alpha: 0.30),
                 blurRadius: 20,
                 offset: const Offset(0, 8),
               ),
@@ -321,7 +321,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 shadowColor: Colors.transparent,
                 foregroundColor: Colors.white,
                 disabledBackgroundColor:
-                    _brandGreenLight.withValues(alpha: 0.5),
+                    _brandBlueLight.withValues(alpha: 0.5),
                 elevation: 0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14),
@@ -374,7 +374,7 @@ class _SignupScreenState extends State<SignupScreen> {
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
-                color: _brandGreen,
+                color: _brandBlue,
               ),
             ),
           ),

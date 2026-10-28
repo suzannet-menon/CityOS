@@ -61,7 +61,7 @@ class WalkSafeApp extends StatelessWidget {
     );
 
     return MaterialApp(
-      title: 'ResilientSteps',
+      title: 'CiVix',
       debugShowCheckedModeBanner: false,
       theme: baseTheme.copyWith(
         scaffoldBackgroundColor: const Color(0xFFF4F7FB),

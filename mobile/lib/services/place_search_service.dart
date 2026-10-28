@@ -171,7 +171,7 @@ class PlaceSearchService {
           .get(
             uri,
             headers: const <String, String>{
-              'User-Agent': 'ResilientStepsMobile/1.0',
+              'User-Agent': 'CiVixMobile/1.0',
               'Accept-Language': 'en',
             },
           )

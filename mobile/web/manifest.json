@@ -1,11 +1,11 @@
 {
-    "name": "ResilientSteps",
-    "short_name": "ResilientSteps",
+    "name": "CiVix",
+    "short_name": "CiVix",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#FFFFFF",
     "theme_color": "#1E4D3A",
-    "description": "Safety- and comfort-aware walking navigation.",
+    "description": "Safety-aware walking navigation.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

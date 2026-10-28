@@ -21,17 +21,25 @@
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="ResilientSteps">
+  <meta name="apple-mobile-web-app-title" content="CiVix">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png">
 
-  <title>ResilientSteps</title>
+  <title>CiVix</title>
   <link rel="manifest" href="manifest.json">
   
   
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+  
+  
+  
+  
+  
+  
+  
+  
   
   
   <style id="splash-screen-style">
@@ -53,6 +61,9 @@
       left: 50%;
       -ms-transform: translate(-50%, -50%);
       transform: translate(-50%, -50%);
+      width: 500px;
+      height: 500px;
+      object-fit: contain;
     }
 
     .contain {
@@ -91,43 +102,13 @@
       bottom: 0;
       right: 0;
     }
-
-    /* Flutter web debug loader is blue by default; use brand green. */
-    .flutter-loader {
-      background-color: #1E4D3A !important;
-    }
-    .flutter-loader .indeterminate:before {
-      background-color: #2E9E5B !important;
-    }
-    .flutter-loader .indeterminate:after {
-      background-color: #4CAF50 !important;
-    }
   </style>
   <script id="splash-screen-script">
     function removeSplashFromWeb() {
-      try {
-        var splash = document.getElementById("splash");
-        if (splash) {
-          if (splash.parentNode) {
-            splash.parentNode.removeChild(splash);
-          } else {
-            splash.remove();
-          }
-        }
-        var branding = document.getElementById("splash-branding");
-        if (branding) {
-          if (branding.parentNode) {
-            branding.parentNode.removeChild(branding);
-          } else {
-            branding.remove();
-          }
-        }
-        document.body.style.background = "transparent";
-      } catch (e) {
-        // Ignored if elements were already unmounted from DOM
-      }
+      document.getElementById("splash")?.remove();
+      document.getElementById("splash-branding")?.remove();
+      document.body.style.background = "transparent";
     }
-    window.addEventListener("flutter-first-frame", removeSplashFromWeb, { once: true });
   </script>
 </head>
 <body>
@@ -136,6 +117,10 @@
       <source srcset="splash/img/dark-1x.png 1x, splash/img/dark-2x.png 2x, splash/img/dark-3x.png 3x, splash/img/dark-4x.png 4x" media="(prefers-color-scheme: dark)">
       <img class="center" aria-hidden="true" src="splash/img/light-1x.png" alt="">
   </picture>
+  
+  
+  
+  
   
   
   <script src="flutter_bootstrap.js" async=""></script>

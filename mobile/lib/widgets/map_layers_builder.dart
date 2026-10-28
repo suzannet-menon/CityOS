@@ -229,7 +229,7 @@ class MapLayersBuilder {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(18),
-                  border: Border.all(color: const Color(0xFF30C56A), width: 3),
+                  border: Border.all(color: const Color(0xFF8CB3FF), width: 3),
                   boxShadow: const <BoxShadow>[
                     BoxShadow(
                       color: Color(0x33000000),
@@ -249,7 +249,7 @@ class MapLayersBuilder {
                       const Icon(
                         Icons.flag_rounded,
                         size: 16,
-                        color: Color(0xFF1B6B3A),
+                        color: Color(0xFF2F6EF6),
                       ),
                       const SizedBox(width: 6),
                       const Text(
@@ -257,7 +257,7 @@ class MapLayersBuilder {
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w800,
-                          color: Color(0xFF1B6B3A),
+                          color: Color(0xFF2F6EF6),
                         ),
                       ),
                     ],

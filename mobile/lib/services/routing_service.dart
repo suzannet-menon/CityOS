@@ -82,8 +82,6 @@ class RoutingService {
       totalRisk: 100 - safetyScore,
       durationMinutes: _asDouble(finalScorePayload?['duration_minutes']),
       warning: finalScorePayload?['warning']?.toString(),
-      comfortScore: _asDouble(finalScorePayload?['comfort_score']),
-      comfortLevel: finalScorePayload?['comfort_level']?.toString(),
     );
   }
 
@@ -286,9 +284,6 @@ class RoutingService {
           incidentDensity: _asDouble(segment['incident_count']),
           lightingHeuristic: lightingHeuristic,
           distanceToQuery: _asDouble(segment['match_distance_m']),
-          shadeScore: _asDouble(segment['shade_score']),
-          heatPenalty: _asDouble(segment['heat_penalty']),
-          comfortScore: _asDouble(segment['comfort_score']),
         ),
       );
     }

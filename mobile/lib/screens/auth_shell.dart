@@ -118,9 +118,8 @@ class _BrandPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<String> bullets = <String>[
-      'Routes that weigh shade, heat, and incident zones',
+      'Routes that weigh safety and incident zones',
       'Save places, report hazards, and alert trusted contacts',
-      'Live weather-aware comfort score for every trip',
     ];
 
     return ConstrainedBox(
@@ -131,10 +130,10 @@ class _BrandPanel extends StatelessWidget {
         children: <Widget>[
           Center(
             child: Image.asset(
-              'assets/f-logo.png',
+              'assets/civix_logo.png',
               width: 180,
               fit: BoxFit.contain,
-              semanticLabel: 'ResilientSteps Logo',
+              semanticLabel: 'CiVix Logo',
             ),
           ),
           const SizedBox(height: 18),
@@ -183,7 +182,7 @@ class _FeatureRow extends StatelessWidget {
           child: const Icon(
             Icons.check_rounded,
             size: 17,
-            color: _brandGreenIcon,
+            color: _brandBlueIcon,
           ),
         ),
         const SizedBox(width: 10),
@@ -203,7 +202,7 @@ class _FeatureRow extends StatelessWidget {
   }
 }
 
-const Color _brandGreenIcon = Color(0xFF1B6B3A);
+const Color _brandBlueIcon = Color(0xFF2557C9);
 
 class _BrandColumn extends StatelessWidget {
   const _BrandColumn({
@@ -222,14 +221,14 @@ class _BrandColumn extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        Center(
-          child: Image.asset(
-            'assets/f-logo.png',
-            width: 120,
-            fit: BoxFit.contain,
-            semanticLabel: 'ResilientSteps Logo',
+          Center(
+            child: Image.asset(
+              'assets/civix_logo.png',
+              width: 120,
+              fit: BoxFit.contain,
+              semanticLabel: 'CiVix Logo',
+            ),
           ),
-        ),
         const SizedBox(height: 10),
         Text(
           headlineText,

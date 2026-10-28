@@ -135,30 +135,6 @@ class RouteSummaryPanel extends StatelessWidget {
               ),
             ],
           ),
-          if (insights.comfortLabel != null) ...<Widget>[
-            const SizedBox(height: 12),
-            Row(
-              children: <Widget>[
-                const Icon(
-                  Icons.thermostat_rounded,
-                  size: 16,
-                  color: Color(0xFF2C8C63),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    insights.comfortLabel!,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: const Color(0xFF2C8C63),
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
           const SizedBox(height: 12),
           Text(
             insights.advice,
@@ -294,7 +270,6 @@ class _RouteInsights {
     required this.watchOutLabel,
     required this.advice,
     required this.toneColor,
-    this.comfortLabel,
   });
 
   final String headline;
@@ -303,7 +278,6 @@ class _RouteInsights {
   final String watchOutLabel;
   final String advice;
   final Color toneColor;
-  final String? comfortLabel;
 
   factory _RouteInsights.fromRoute(ScoredRoute route) {
     final double score = route.averageSafetyScore;
@@ -348,7 +322,6 @@ class _RouteInsights {
         cautiousSegments: cautiousSegments,
       ),
       toneColor: toneColor,
-      comfortLabel: route.comfortSummary,
     );
   }
 

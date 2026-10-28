@@ -13,6 +13,6 @@ void main() {
     await tester.pump(const Duration(milliseconds: 50));
 
     expect(find.byType(HomeScreen), findsOneWidget);
-    expect(find.image(const AssetImage('assets/f-logo.png')), findsNothing);
+    expect(find.image(const AssetImage('assets/civix_logo.png')), findsNothing);
   });
 }

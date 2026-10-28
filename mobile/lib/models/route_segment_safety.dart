@@ -20,9 +20,6 @@ class RouteSegmentSafety {
     this.lightingHeuristic,
     this.timePenalty,
     this.distanceToQuery,
-    this.shadeScore,
-    this.heatPenalty,
-    this.comfortScore,
   });
 
   final LatLng start;
@@ -52,10 +49,4 @@ class RouteSegmentSafety {
   final double? lightingHeuristic;
   final double? timePenalty;
   final double? distanceToQuery;
-
-  // Environmental comfort signals from the backend (nullable for older
-  // deployments that do not return heat/shade data yet).
-  final double? shadeScore;
-  final double? heatPenalty;
-  final double? comfortScore;
 }

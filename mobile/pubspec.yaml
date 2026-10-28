@@ -67,6 +67,7 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/civix_logo.png
     - assets/f-logo.png
     - assets/logo_icon.png
     - assets/logo_icon_fg.png
@@ -127,7 +128,7 @@ flutter_launcher_icons:
 # Native launch splash (Android 12+ and legacy, iOS)
 flutter_native_splash:
   color: "#FFFFFF"
-  image: assets/f-logo.png
+  image: assets/civix_logo.png
   android_12:
     image: assets/logo_icon_fg.png
     color: "#FFFFFF"
